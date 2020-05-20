@@ -1,0 +1,255 @@
+.swal2-popup{
+    font-size: 1.5rem !important;
+  }
+    .search-custom{
+        display:inline !important;
+        vertical-align:1px !important;    
+    }
+    .comment-dontexist-panel{
+      font-size:10px !important;
+      margin-top: 13px !important;
+    }
+    .form-group label{
+      cursor: pointer;
+    }
+ .main-tumbnail{
+	font-size: 17px;
+}
+.main-tumbnail-icon {
+	font-size: 30px;
+	vertical-align: -4px;
+	color: #5a5964;
+}
+.panel table,th{
+  text-align: center;
+}
+.btn-actions-controller button{
+  transition: 0.3s;
+  margin-right:3px !important; 
+  font-size: 16px;
+}
+.btn-actions-controller button:hover{
+  margin-bottom:10px; 
+}
+.sd-info{
+ text-align: justify;
+line-height: 25px;
+}
+.add-parent-filter{
+margin-bottom: 23px;
+cursor: pointer;
+}
+.add-filter-btn{
+float: right;
+font-size: 17px;
+margin-top: 7px;
+color: #513901;
+box-shadow: 3px 4px 7px #d2d2d2;
+padding: 7px;
+border-radius: 3px;
+background: #f9bb00;
+}
+.filter-custom{
+ background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: left center; cursor: auto;
+ margin-top:10px !important;
+ margin-bottom:10px !important;
+ margin-left: 12px !important;
+}
+.single-filter-part{
+  position: relative;
+  transition: 0.5s;
+}
+.parent-filter div{
+  margin: 5px;
+}
+.btn-filter{
+  transition: 0.3s;
+  color:#243bb9;
+}
+.btn-filter:hover{
+  color:#152580;
+  margin-bottom: 10px;
+}
+.sp-div-check{
+	border: 1px solid #eae2f2;
+	padding: 5px;
+	border-radius: 3px;
+}
+.select-holder{
+  position: relative;
+  height: 145px;
+}
+.loading{
+  width:60px;
+  height:60px;
+  position:absolute;
+  left:-6px; 
+  bottom:-12px; 
+  display: none;
+}
+#parent_id{
+  transition: 0.8s;
+}
+.filter-group{
+    margin-right: 5% !important ;
+}
+
+.close-single-filter{
+  font-size:30px;  
+  position: absolute;
+  left: 0%;
+  top: 5%;
+}
+.button-disable-filter{
+  cursor: not-allowed !important;
+  background: linear-gradient(36deg, rgb(105, 104, 108) 0%, rgb(29, 31, 32) 100%) !important;
+}
+.close-single-property{
+	position: absolute;
+	left: 5%;
+	font-size: 27px;
+	color: #60063d;
+}
+.close-single-property i{
+	color: #60063d;
+}
+
+/* Filter Button animated Start*/
+#subset{
+	font-size: small;
+}
+
+/* Tick Button Start */
+
+/* Tick Button End*/
+
+/* Filter Button animated End*/
+/**/
+
+/* AcarDeon filter index CSS*/
+.list-group{
+		width:80% !important;
+		margin:0px auto !important;
+		margin-bottom: 20px !important;
+	
+	}
+	.list-group .active{
+		margin-top: 10px !important;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+	.list-group .alert{
+		border: 1px solid #ddd;
+	}
+
+	.card{
+	background: #f7f7f7;
+	border-radius: 5px;
+	width: 90%;
+	margin: auto;
+	}
+	.mb-0{
+	border: 1px solid #e8e8e8;
+	border-radius: 5px;
+	}
+	.actions-group{
+		position: absolute;
+		display: inline;
+		left:10px;
+	}
+/*End Acardeom*/
+/* Preloader Style*/
+.preloader{
+  position: fixed;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  background: url('../PubAdmin/assets/loader/Preloader_2.gif') center no-repeat #fff;
+}
+.editor-cv{
+    resize: vertical !important;
+}
+.tumbnail-product-img{
+  width: 10%;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.product-img-part{
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+}
+.product-img-part div.form-group {
+	margin-right: 24px;
+}
+.product-img-part h4.intro-pic {
+  display: inline-block;
+  font-weight: bold;
+  margin: 21px 0;
+  margin-bottom: 30px;
+
+}
+.size-mid{
+  font-size: 30px;
+  vertical-align: -7px !important;
+  margin-right: 2px;
+}
+.old-tumbnail{
+  margin-bottom: 25px !important;
+}
+.jalali-d{
+  direction: ltr;
+}
+
+/* Submit Animated Button Start*/
+
+#subset{
+	font-size: small;
+}
+
+.button-animate-send, .tick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: IRANSANSWEB !important;
+}
+
+
+.button-animate-send {
+  width: max-content;
+  height: max-content;
+  border-radius: 6px;
+  transition: all .3s cubic-bezier(0.67, 0.17, 0.40, 0.83);
+}
+
+.button-animate-send svg {
+  transform: rotate(180deg);
+  transition: all .5s;
+}
+
+.button-animate-send__circle {
+  width: 25px;
+  height: 25px;
+  background: #78CD51;
+  border-radius: 50%;
+  transform: rotate(-180deg);
+}
+
+.button-animate-send:hover {
+  cursor: pointer;
+}
+
+.tick {
+  color: white;
+  font-size: 15px;
+  transition: all .9s;
+}
+/* Submit Animated Button End*/
+.message{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+  
+

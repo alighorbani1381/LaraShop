@@ -1,0 +1,33 @@
+# Ajax Given Parameter from Server (Create HTML And Send to View) => (Basket)
+*
+*
+*Some times you need Give Rows from DataBase and how do this do?
+Example: I Have Basket  And When Click From Button ADD_TO_BASKET
+Steps:
+1-Fist Send Parameter to Server With Ajax
+But Now go to the server side Code:+=>
+From Server (Laravel) First Create Template HTML and save form variable
+and whene Send This Variable from json response to Document
+2-After You Give Data From JQuery you can insted of information
+and Use it
+
+it's Very Easy and Cool !!
+
+<?php
+ $disValue=0;
+foreach($baskets as $key => $basket){
+        $text='
+        <tr>
+        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="$basket->product_data->name" alt="*" src="$basket->product_data->images"></a></td>
+        <td class="text-left"><a href="product.html">$basket->product_data->name</a></td>
+        <td class="text-right" id="product-count$key">x$basket->count</td>
+        <td class="text-right">$basket->product_data->dis_price تومان</td>
+        <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" type="submit"><i class="fa fa-times"></i></button></td>
+        </tr>
+        ';
+        for($i=0; $i < $basket->count; $i++)
+        $disValue=$disValue+$basket->product_data->dis_value;       
+    }
+echo $text;
+die;
+//<form action="{{ route('basket.destroy', ['basket' => $basket->id]) }}" method="post">@csrf @method('DELETE') </form>
