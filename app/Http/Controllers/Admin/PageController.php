@@ -6,6 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use Illuminate\Http\Request;
 
+class PageRequest extends Request{
+
+    public static function update($request){
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'english_name' => 'required',
+            'body' => 'required',
+            'status' => 'required',
+        ]);
+    }
+
+    public function store($request){
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'english_name' => 'required',
+            'body' => 'required',
+            'status' => 'required',
+        ]);
+    }
+}
+
 class PageController extends AdminController
 {
     /**
@@ -43,14 +66,8 @@ class PageController extends AdminController
      */
     public function store(Request $request)
     {
-        $this->validate(request(),[
-            'title' => 'required',
-            'description' => 'required',
-            'english_name' => 'required',
-            'body' => 'required',
-            'status' => 'required',
-        ]);
-
+       
+        PageRequest::store();
         $page=Page::create([
             'author' => auth()->user()->id,
             'title'  => $request['title'],
@@ -69,44 +86,21 @@ class PageController extends AdminController
             return 'مشکلی پیش آمده است';
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Page  $page
-     * @return \Illuminate\Http\Response
-     */
     public function show(Page $page)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Page  $page
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit(Page $page)
     {
         return view('Admin.Page.PageEdit', compact('page'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Page  $page
-     * @return \Illuminate\Http\Response
-     */
+  
     public function update(Request $request, Page $page)
     {
-        $this->validate(request(),[
-            'title' => 'required',
-            'description' => 'required',
-            'english_name' => 'required',
-            'body' => 'required',
-            'status' => 'required',
-        ]);
+       PageRequest::update($request);
 
         $updated=$page->update([
             'author' => auth()->user()->id,
@@ -124,12 +118,7 @@ class PageController extends AdminController
             return 'در بروز رسانی این برگه مشکلی پیش آمده است';
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Page  $page
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Page $page)
     {
         $page->delete();
