@@ -17,9 +17,9 @@
                             <span class="arrow"></span>
                         </a>
                         <ul class="sub">
-                            {{-- @can('Category-List') --}}
-                            <li><a class="" href="{{ route('category.index') }}">لیست دسته بندی ها</a></li>
-                            {{-- @endcan --}}
+                            @can('category_list')
+                                <li><a class="" href="{{ route('category.index') }}">لیست دسته بندی ها</a></li>
+                            @endcan
                             
                             {{-- @can('Category-Create') --}}
                             <li><a class="" href="{{ route('category.create') }}">افزودن دسته بندی </a></li>
