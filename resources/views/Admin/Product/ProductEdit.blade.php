@@ -81,7 +81,7 @@
 
                <div class="form-group">
                   <label for="product-count">تعداد</label>
-                  <input type="number" value="{{ $product->total }} " name="total" class="form-control" id="product-count" placeholder="تعداد این محصول را وارد کنید ...">
+                  <input type="number" value="{{ $product->total }}" name="total" class="form-control" id="product-count" placeholder="تعداد این محصول را وارد کنید ...">
                </div>
 
                @if($errors->has('total'))
