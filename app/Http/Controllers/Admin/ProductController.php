@@ -1,130 +1,142 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Product;
 use App\ProductImage;
 use App\Category;
 
+class ProductRequest extends Request
+{
+
+	public static function update($request)
+	{
+		$request->validate([
+			"name" => 'required',
+			"body" => 'required',
+			"price" => 'required',
+			"total" => 'required',
+			"discount" => 'required',
+		]);
+	}
+
+	public static function store($request)
+	{
+		$request->validate([
+			'name' => 'required',
+			'category_id' => 'required',
+			'brand' => 'required',
+			'body' => 'required',
+			'picture' => 'required|image',
+			'price' => 'required',
+			'discount' => 'required',
+			'total' => 'required',
+		]);
+	}
+}
+
 class ProductController extends AdminController
 {
 
-    public function index(Request $request)
-    {
+	public function index(Request $request)
+	{
 		// if( Gate::allows('Product-List') ){
-			$products=$this->search(Product::class, 'name', $request->all(), 15);        
-			//$products=Product::latest()->paginate('10');
-			return view('Admin.Product.index',compact('products'));
+		$products = $this->search(Product::class, 'name', $request->all(), 15);
+		//$products=Product::latest()->paginate('10');
+		return view('Admin.Product.index', compact('products'));
 		// }else
-			return redirect('dashbord');	
-    }
+		return redirect('dashbord');
+	}
 
-   
-    public function create()
-    {
-		
+
+	public function create()
+	{
+
 		// if( Gate::allows('Product-Create') ):
-			$categories=Category::where('subset',"!=",0)->get();
-			return view('Admin.Product.ProductAdd',compact('categories'));
+		$categories = Category::where('subset', "!=", 0)->get();
+		return view('Admin.Product.ProductAdd', compact('categories'));
 		// else:
-			return redirect('dashbord');	
+		return redirect('dashbord');
 		// endif;
-    }
+	}
 
-    public function store(Request $request)
-    {
-		$this->validate(request(),[
-	   'name'=>'required',
-	   'category_id'=>'required',
-	   'brand'=>'required',
-	   'body'=>'required',
-	   'picture'=>'required|image',
-	   'price'=>'required',
-	   'discount'=>'required',
-	   'total'=>'required',
+	public function store(Request $request)
+	{
+		ProductRequest::store($request);
+		$image = $this->ImageUploade($request['picture'], 'Product-Pictures/');
+
+		Product::create([
+			'name' => $request['name'],
+			'category_id' => $request['category_id'],
+			'user_id' => auth()->user()->id,
+			'brand' => $request['brand'],
+			'body' => $request['body'],
+			'bestseler' => '0',
+			'price' => $request['price'],
+			'discount' => $request['discount'],
+			'image' => $image,
+			'total' => $request['total'],
+			'status' => $request['status'],
 		]);
-		
-		$file=$request['picture'];
-		$image=$this->ImageUploade($file,'Product-Pictures/');
-		
-       Product::create([
-	   'name'=>$request['name'],
-	   'category_id'=>$request['category_id'],
-	   'user_id'=>auth()->user()->id,
-	   'brand'=>$request['brand'],
-	   'body'=>$request['body'],
-	   'bestseler'=>'0',
-	   'price'=>$request['price'],
-	   'discount'=>$request['discount'],
-	   'image'=>$image,
-	   'total'=>$request['total'],
-	   'status'=>$request['status'],
-	   ]);
-	   return redirect(route('product.index'));
-    }
+		return redirect(route('product.index'));
+	}
 
 
-    public function show(Product $product)
-    {
-        
-    }
+	public function show(Product $product)
+	{
+	}
 
-  
-    public function edit(Product $product)
-    {
+
+	public function edit(Product $product)
+	{
 		// $isAccess=Gate::allows('view',$product);//Create This Gate with Policy
-		
+
 		// if($isAccess)
-			return view('Admin.Product.ProductEdit',compact('product'));
+		return view('Admin.Product.ProductEdit', compact('product'));
 		// else
-			return redirect('dashbord');	
-	
-    }
+		return redirect('dashbord');
+	}
 
-    
-    public function update(Request $request, Product $product)
-    {
-		$this->validate(request(),[
-		"name"=>'required',
-		"body"=>'required',
-		"price"=>'required',
-		"total"=>'required',
-		"discount"=>'required',
-		]);
-		
-		$new_data=$request->all();
-        $product->update($new_data);
+
+	public function update(Request $request, Product $product)
+	{
+
+		ProductRequest::update($request);
+		$new_data = $request->all();
+		$product->update($new_data);
 		return back();
-    }
+	}
 
-    
-    public function destroy(Product $product)
-    {
-		$path=$this->StandardPath().$product->image;
-		$deleted=$this->ImageDelete($path);
-		if($deleted)
+
+	public function destroy(Product $product)
+	{
+		$path = $this->StandardPath() . $product->image;
+		$deleted = $this->ImageDelete($path);
+		if ($deleted)
 			$product->delete();
-	
-        
-		return back(); 
-	}
-	
-	public function gallery(Request $request){
-		$id=$request->get('id');
-		$product=Product::findOrFail($id);
-		return view('Admin.Product.ProductGallery',compact('product'));
-	}
-	
-	public function upload(Request $request){
-		$id=$request->get('id');
-		$files=$request->file('file');
-		$file_name=rand()."-".$id."-Image.".$files->getClientOriginalExtension();
-		$path=public_path('Uploads/Gallery');
-		if($files->move($path,$file_name)){
-			$ProductImage=new ProductImage();
-			$ProductImage->product_id=$id;
-			$ProductImage->url=$file_name;
-			$ProductImage->save();
-		}
+		return back();
 	}
 
+	public function gallery(Request $request)
+	{
+		$id = $request->get('id');
+		$product = Product::findOrFail($id);
+		return view('Admin.Product.ProductGallery', compact('product'));
+	}
+
+	public function upload(Request $request)
+	{
+		$id = $request->get('id');
+		$files = $request->file('file');
+		$file_name = rand() . "-" . $id . "-Image." . $files->getClientOriginalExtension();
+		$path = public_path('Uploads/Gallery');
+		if (!$files->move($path, $file_name)) {
+			return null;
+		}
+		$ProductImage = new ProductImage();
+		$ProductImage->product_id = $id;
+		$ProductImage->url = $file_name;
+		$ProductImage->save();
+	}
 }
