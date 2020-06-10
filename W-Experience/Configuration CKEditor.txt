@@ -1,9 +1,0 @@
-// #Custtom Settings
-config.language = 'fa:1';
-config.uiColor = '#f8f8f8';
-config.fontSize_defaultLabel = '16px';
-config.font_style = {
-    element:        ['div','html','body','span','b'],
-    styles:         { 'font-family': '#(IRANSANSWEB)' },
-    overrides:      [ { element: 'font', attributes: { 'face': 'IRANSANSWEB' } } ]
-};
