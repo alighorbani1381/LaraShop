@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
 
     public function getRouteKeyName()
     {
@@ -17,7 +17,7 @@ class Page extends Model
     //Jalali Date Time
     public function getJalaliDateTimeAttribute()
     {
-        $time=verta($this->created_at);	
+        $time = verta($this->created_at);
         Verta::setStringformat('Y/n/j h:m');
         return $time;
     }

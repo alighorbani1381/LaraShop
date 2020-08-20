@@ -11,7 +11,8 @@ class User extends Authenticatable
     use Notifiable;
 
     #Relations
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 

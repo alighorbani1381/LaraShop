@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
 
 
     public function getSubQuestionAttribute()
     {
-        if($this->subset == '0')
-            $subsets=Question::where('subset', $this->id)->get();
+        if ($this->subset == '0')
+            $subsets = Question::where('subset', $this->id)->get();
         else
-            $subsets=null;
+            $subsets = null;
 
         return $subsets;
     }

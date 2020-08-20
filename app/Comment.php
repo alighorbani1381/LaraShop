@@ -15,45 +15,47 @@ class Comment extends Model
         1=> it means comment Share to Website                   True
         2=> it means comment Move to Trash                      Trash
     */
-    protected $guarded=[];
+    protected $guarded = [];
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
     public function getSubBodyAttribute()
     {
-        $words=explode(' ', $this->body);
-        foreach($words as $key => $word)
-            if($key != 7)
-                $specialText[]=$word;
+        $words = explode(' ', $this->body);
+        foreach ($words as $key => $word)
+            if ($key != 7)
+                $specialText[] = $word;
             else
                 break;
-            
 
-            return implode(" ", $specialText);
+
+        return implode(" ", $specialText);
     }
 
     public function getUserAttribute()
     {
-        $user=User::find($this->user_id);
+        $user = User::find($this->user_id);
         return $user;
     }
 
     public function getProductAttribute()
     {
-        $product=Product::find($this->product_id);
+        $product = Product::find($this->product_id);
         return $product;
     }
 
     public function getDifTimeAttribute()
     {
-        $time=verta($this->created_at);	
-        $diff=$time->formatDifference();
+        $time = verta($this->created_at);
+        $diff = $time->formatDifference();
         return $diff;
     }
 }
