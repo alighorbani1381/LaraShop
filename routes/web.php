@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -122,4 +123,9 @@ Route::group(['namespace' => 'User', 'middleware' => ['auth', 'UserLevel'], 'pre
     Route::get('ticket/new', 'UserTicketController@create')         ->name('user.ticket.create');
     Route::get('ticket/{ticket}', 'UserTicketController@show')      ->name('user.ticket.show');
     Route::post('ticket/new/store', 'UserTicketController@store')   ->name('user.ticket.store');
+});
+
+
+Route::get("test", function(){
+    return Hash::make("1234");
 });
