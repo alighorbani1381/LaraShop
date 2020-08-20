@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Comment;
 use App\Product;
-Use Verta;
+use Verta;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -17,7 +17,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments=Comment::where('shared', '0')->orderBy('created_at', 'asc')->paginate('10');
+        $comments = Comment::where('shared', '0')->orderBy('created_at', 'asc')->paginate('10');
         return view('Admin.Comment.index', compact('comments'));
     }
 
@@ -39,30 +39,29 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(request(),[
-            'body' => 'required' ,
-            'rating' => 'required|numeric' ,
+        $this->validate(request(), [
+            'body' => 'required',
+            'rating' => 'required|numeric',
         ]);
-        
-        $Logined=auth()->user();
-        if($Logined){
-            $productId=$request->input('product');
-            $rate=$request->input('rating');
-            $product=Product::findOrFail($productId);
-                $comment=Comment::create([
-                    'user_id' => $Logined->id,
-                    'product_id' => $product->id,
-                    'user_id' => $Logined->id,
-                    'body' => $request->body,
-                    'shared' => '0',
-                    'comment_rate' => $rate,
-                ]);
-                
-                session()->flash('userComment', $comment);
-                return redirect()->route('products.show',$product->name);
-            }
-            else
-                return redirect()->route('index');
+
+        $Logined = auth()->user();
+        if ($Logined) {
+            $productId = $request->input('product');
+            $rate = $request->input('rating');
+            $product = Product::findOrFail($productId);
+            $comment = Comment::create([
+                'user_id' => $Logined->id,
+                'product_id' => $product->id,
+                'user_id' => $Logined->id,
+                'body' => $request->body,
+                'shared' => '0',
+                'comment_rate' => $rate,
+            ]);
+
+            session()->flash('userComment', $comment);
+            return redirect()->route('products.show', $product->name);
+        } else
+            return redirect()->route('index');
     }
 
     /**
@@ -84,8 +83,8 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        $product=$comment->product()->first();
-        $user=$comment->user()->first();
+        $product = $comment->product()->first();
+        $user = $comment->user()->first();
         return view('Admin.Comment.CommentEdit', compact('comment', 'user', 'product'));
     }
 
@@ -98,12 +97,12 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        $status=$request['status'] ? $request['status'] : '0';
+        $status = $request['status'] ? $request['status'] : '0';
         $comment->update([
             'body'   => $request['body'],
             'shared' => $status,
         ]);
-        return redirect()->route('comment.index');   
+        return redirect()->route('comment.index');
     }
 
     /**
@@ -117,27 +116,26 @@ class CommentController extends Controller
         $comment->delete();
         return redirect()->route('comment.index');
     }
-    
-    public function verify(Request $request){
-        $comment=Comment::find($request->input('comment'));
-        if($comment != null){
-            $updated=$comment->update(['shared'=> '1']);
-            return response()->json(['successfuly' => 'OK', 'comment' => $comment->id]);
-        }
-        else
-            return response()->json(['successfuly' => 'NO']);
 
+    public function verify(Request $request)
+    {
+        $comment = Comment::find($request->input('comment'));
+        if ($comment != null) {
+            $updated = $comment->update(['shared' => '1']);
+            return response()->json(['successfuly' => 'OK', 'comment' => $comment->id]);
+        } else
+            return response()->json(['successfuly' => 'NO']);
     }
 
     public function trashedComment()
     {
-        $comments=Comment::where('shared', '2')->paginate('10');
+        $comments = Comment::where('shared', '2')->paginate('10');
         return view('Admin.Comment.CommentTrashed', compact('comments'));
     }
 
     public function moveToTrash(Comment $comment)
     {
-        $comment->shared='2';
+        $comment->shared = '2';
         $comment->save();
         return redirect()->route('comment.index');
     }

@@ -1,27 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\User;
 use App\Role;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Jrean\UserVerification\Events\UserVerified;
-use Jrean\UserVerification\Facades\UserVerification;
 
 class UserController extends AdminController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //return auth()->user()->roles()->get();
-        //dd(auth()->user()->hasRole('Admin'));
-    
-        $users=User::latest()->paginate('6');
-        return view('Admin.User.index',compact('users'));
+        $users = User::latest()->paginate('6');
+        return view('Admin.User.index', compact('users'));
     }
 
     public function create()
@@ -29,10 +20,10 @@ class UserController extends AdminController
         return view('Admin.User.UserAdd');
     }
 
-  
+
     public function store(Request $request)
     {
-        $this->validate(request(),[
+        $this->validate(request(), [
             'userName' => 'required',
             'userEmail' => 'required|email',
             'userPassword' => 'required',
@@ -42,50 +33,46 @@ class UserController extends AdminController
         ]);
 
 
-        if($request['userPassword'] != $request['userPasswordConfrim']){
-            session()->flash('passwordReapit',true);
+        if ($request['userPassword'] != $request['userPasswordConfrim']) {
+            session()->flash('passwordReapit', true);
             return back();
-        }else{
-                $signup=[
-                    'name' => $request['userName'],
-                    'email' => $request['userEmail'],
-                    'password' => bcrypt($request['userPassword']),
-                    'type' => $request['userRole'],
-                    'verified' => '0',
-                ];
+        } else {
+            $signup = [
+                'name' => $request['userName'],
+                'email' => $request['userEmail'],
+                'password' => bcrypt($request['userPassword']),
+                'type' => $request['userRole'],
+                'verified' => '0',
+            ];
 
-                if($request['checkEmail'] == true){
-                    $user=User::create($signup);
-                    // event(new Registered($user));
-                    // UserVerification::generate($user);
-                    // UserVerification::send($user, 'My Custom E-mail Subject From Panel Admin');
-                    session()->flash('sendMail', true);
-                    return redirect()->route('user.index');
-                }
-                else if($request['checkEmail'] == false){
-                    $signup['verified'] = '1';
-                    $user=User::create($signup);
-                    session()->flash('registerEmail', true);
-                    return redirect()->route('user.index');
-                }
-                else
-                    return back();
-                
-            
-            }
+            if ($request['checkEmail'] == true) {
+                $user = User::create($signup);
+                // event(new Registered($user));
+                // UserVerification::generate($user);
+                // UserVerification::send($user, 'My Custom E-mail Subject From Panel Admin');
+                session()->flash('sendMail', true);
+                return redirect()->route('user.index');
+            } else if ($request['checkEmail'] == false) {
+                $signup['verified'] = '1';
+                $user = User::create($signup);
+                session()->flash('registerEmail', true);
+                return redirect()->route('user.index');
+            } else
+                return back();
+        }
     }
 
     public function show(User $user)
     {
-        
+
         //
     }
 
     #Show Edit To User
     public function edit(User $user)
     {
-        $roles=Role::get();
-        return view('Admin.User.UserEdit',compact('user','roles'));
+        $roles = Role::get();
+        return view('Admin.User.UserEdit', compact('user', 'roles'));
     }
 
     #Update User
@@ -103,6 +90,4 @@ class UserController extends AdminController
         $user->delete();
         return redirect(route('user.index'));
     }
-
-    
 }

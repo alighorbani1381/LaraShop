@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Page;
 use Illuminate\Http\Request;
 
-class PageRequest extends Request{
+class PageRequest extends Request
+{
 
-    public static function update($request){
+    public static function update($request)
+    {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -18,7 +19,8 @@ class PageRequest extends Request{
         ]);
     }
 
-    public function store($request){
+    public function store($request)
+    {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -31,44 +33,31 @@ class PageRequest extends Request{
 
 class PageController extends AdminController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
-        $userId=auth()->user()->id;
-        if(isset($request->search)){
-            $accesPages=Page::where('type', 'page')->where('author', $userId)->orderBy('created_at', 'desc');
-            $pages=$this->searchCondition($accesPages,'title', $request->all(), 10);        
-        }else
-            $pages=Page::where('type', 'page')->where('author', $userId)->orderBy('created_at', 'desc')->paginate(10);
-        
+        $userId = auth()->user()->id;
+        if (isset($request->search)) {
+            $accesPages = Page::where('type', 'page')->where('author', $userId)->orderBy('created_at', 'desc');
+            $pages = $this->searchCondition($accesPages, 'title', $request->all(), 10);
+        } else
+            $pages = Page::where('type', 'page')->where('author', $userId)->orderBy('created_at', 'desc')->paginate(10);
+
         return view('Admin.Page.index', compact('pages'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('Admin.Page.PageAdd');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-       
+
         PageRequest::store();
-        $page=Page::create([
+        $page = Page::create([
             'author' => auth()->user()->id,
             'title'  => $request['title'],
             'description'  => $request['description'],
@@ -80,7 +69,7 @@ class PageController extends AdminController
             'view' => '0',
         ]);
 
-        if($page)
+        if ($page)
             return redirect()->route('page.index');
         else
             return 'مشکلی پیش آمده است';
@@ -91,18 +80,18 @@ class PageController extends AdminController
         //
     }
 
-   
+
     public function edit(Page $page)
     {
         return view('Admin.Page.PageEdit', compact('page'));
     }
 
-  
+
     public function update(Request $request, Page $page)
     {
-       PageRequest::update($request);
+        PageRequest::update($request);
 
-        $updated=$page->update([
+        $updated = $page->update([
             'author' => auth()->user()->id,
             'title'  => $request['title'],
             'description'  => $request['description'],
@@ -112,13 +101,13 @@ class PageController extends AdminController
             'shared' => $request['status'],
         ]);
 
-        if($updated)
+        if ($updated)
             return redirect()->route('page.index');
         else
             return 'در بروز رسانی این برگه مشکلی پیش آمده است';
     }
 
-    
+
     public function destroy(Page $page)
     {
         $page->delete();
